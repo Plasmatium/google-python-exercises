@@ -49,9 +49,27 @@ import sys
 
 # This basic command line argument parsing code is provided and
 # calls the print_words() and print_top() functions which you must define.
+
+from pipe import *
+
+def word_count(filename):
+  f = open(filename)
+  s = f.read()
+  f.close()
+
+  return s.lower().split()|groupby(lambda x: x)|select(lambda x: (x[0], x[1]|count))
+
+def print_words(filename):
+  for l in word_count(filename)|sort(key=lambda x: x[0]):
+    print(l)
+
+def print_top(filename):
+  for l in word_count(filename)|sort(key=lambda x: x[1], reverse = True)|take(20)|as_list:
+    print(l)
+
 def main():
   if len(sys.argv) != 3:
-    print 'usage: ./wordcount.py {--count | --topcount} file'
+    print ('usage: ./wordcount.py {--count | --topcount} file')
     sys.exit(1)
 
   option = sys.argv[1]
@@ -61,7 +79,7 @@ def main():
   elif option == '--topcount':
     print_top(filename)
   else:
-    print 'unknown option: ' + option
+    print ('unknown option: ') + option
     sys.exit(1)
 
 if __name__ == '__main__':

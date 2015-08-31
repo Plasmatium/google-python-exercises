@@ -20,9 +20,14 @@
 # strings where the string length is 2 or more and the first
 # and last chars of the string are the same.
 # Note: python does not have a ++ operator, but += works.
+
+#-----------------------------
+from pipe import *
+#-----------------------------
+
 def match_ends(words):
   # +++your code here+++
-  return
+  return words|where(lambda x: len(x)>=2 and x[0]==x[-1])|count
 
 
 # B. front_x
@@ -34,7 +39,9 @@ def match_ends(words):
 # before combining them.
 def front_x(words):
   # +++your code here+++
-  return
+  l1 = words|where(lambda x: x[0] == 'x')|sort
+  l2 = words|where(lambda x: x[0] != 'x')|sort
+  return l1 + l2
 
 
 
@@ -46,7 +53,7 @@ def front_x(words):
 # Hint: use a custom key= function to extract the last element form each tuple.
 def sort_last(tuples):
   # +++your code here+++
-  return
+  return tuples|sort(key = lambda x: x[-1])
 
 
 # Simple provided test() function used in main() to print
@@ -56,34 +63,32 @@ def test(got, expected):
     prefix = ' OK '
   else:
     prefix = '  X '
-  print '%s got: %s expected: %s' % (prefix, repr(got), repr(expected))
+  print ('%s got: %s expected: %s' % (prefix, repr(got), repr(expected)))
 
 
 # Calls the above functions with interesting inputs.
 def main():
-  print 'match_ends'
-  test(match_ends(['aba', 'xyz', 'aa', 'x', 'bbb']), 3)
-  test(match_ends(['', 'x', 'xy', 'xyx', 'xx']), 2)
-  test(match_ends(['aaa', 'be', 'abc', 'hello']), 1)
+  print ('match_ends',
+  test(match_ends(['aba', 'xyz', 'aa', 'x', 'bbb']), 3),
+  test(match_ends(['', 'x', 'xy', 'xyx', 'xx']), 2),
+  test(match_ends(['aaa', 'be', 'abc', 'hello']), 1))
 
-  print
-  print 'front_x'
+  print ('front_x',
   test(front_x(['bbb', 'ccc', 'axx', 'xzz', 'xaa']),
-       ['xaa', 'xzz', 'axx', 'bbb', 'ccc'])
+       ['xaa', 'xzz', 'axx', 'bbb', 'ccc']),
   test(front_x(['ccc', 'bbb', 'aaa', 'xcc', 'xaa']),
-       ['xaa', 'xcc', 'aaa', 'bbb', 'ccc'])
+       ['xaa', 'xcc', 'aaa', 'bbb', 'ccc']),
   test(front_x(['mix', 'xyz', 'apple', 'xanadu', 'aardvark']),
-       ['xanadu', 'xyz', 'aardvark', 'apple', 'mix'])
+       ['xanadu', 'xyz', 'aardvark', 'apple', 'mix']))
 
        
-  print
-  print 'sort_last'
+  print ('sort_last',
   test(sort_last([(1, 3), (3, 2), (2, 1)]),
-       [(2, 1), (3, 2), (1, 3)])
+       [(2, 1), (3, 2), (1, 3)]),
   test(sort_last([(2, 3), (1, 2), (3, 1)]),
-       [(3, 1), (1, 2), (2, 3)])
+       [(3, 1), (1, 2), (2, 3)]),
   test(sort_last([(1, 7), (1, 3), (3, 4, 5), (2, 2)]),
-       [(2, 2), (1, 3), (3, 4, 5), (1, 7)])
+       [(2, 2), (1, 3), (3, 4, 5), (1, 7)]))
 
 
 if __name__ == '__main__':

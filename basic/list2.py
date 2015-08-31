@@ -12,9 +12,21 @@
 # all adjacent == elements have been reduced to a single element,
 # so [1, 2, 2, 3] returns [1, 2, 3]. You may create a new list or
 # modify the passed in list.
+
+from pipe import *
+
 def remove_adjacent(nums):
   # +++your code here+++
-  return
+  #last = [None]
+  #def is_last(x):
+  #  if x==last[0]:
+  #    return True
+  #  else:
+  #    last[0] = x
+  #    return False
+
+  #return nums|where(lambda x: (not is_last(x)) and x)|as_list
+  return range(0, len(nums)+1)|where(lambda x: x in nums and x)|as_list
 
 
 # E. Given two lists sorted in increasing order, create and return a merged
@@ -23,7 +35,7 @@ def remove_adjacent(nums):
 # pass of both lists.
 def linear_merge(list1, list2):
   # +++your code here+++
-  return
+  return list1+list2|sort
 
 # Note: the solution above is kind of cute, but unforunately list.pop(0)
 # is not constant time with the standard python list implementation, so
@@ -41,24 +53,24 @@ def test(got, expected):
     prefix = ' OK '
   else:
     prefix = '  X '
-  print '%s got: %s expected: %s' % (prefix, repr(got), repr(expected))
+  print ('%s got: %s expected: %s' % (prefix, repr(got), repr(expected)))
 
 
 # Calls the above functions with interesting inputs.
 def main():
-  print 'remove_adjacent'
-  test(remove_adjacent([1, 2, 2, 3]), [1, 2, 3])
-  test(remove_adjacent([2, 2, 3, 3, 3]), [2, 3])
-  test(remove_adjacent([]), [])
+  print ('remove_adjacent',
+  test(remove_adjacent([1, 2, 2, 3]), [1, 2, 3]),
+  test(remove_adjacent([2, 2, 3, 3, 3]), [2, 3]),
+  test(remove_adjacent([]), []))
 
-  print
-  print 'linear_merge'
+  #print
+  print ('linear_merge',
   test(linear_merge(['aa', 'xx', 'zz'], ['bb', 'cc']),
-       ['aa', 'bb', 'cc', 'xx', 'zz'])
+       ['aa', 'bb', 'cc', 'xx', 'zz']),
   test(linear_merge(['aa', 'xx'], ['bb', 'cc', 'zz']),
-       ['aa', 'bb', 'cc', 'xx', 'zz'])
+       ['aa', 'bb', 'cc', 'xx', 'zz']),
   test(linear_merge(['aa', 'aa'], ['aa', 'bb', 'bb']),
-       ['aa', 'aa', 'aa', 'bb', 'bb'])
+       ['aa', 'aa', 'aa', 'bb', 'bb']))
 
 
 if __name__ == '__main__':
