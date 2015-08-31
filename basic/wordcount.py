@@ -49,15 +49,17 @@ import sys
 
 # This basic command line argument parsing code is provided and
 # calls the print_words() and print_top() functions which you must define.
+print('wordcount.py loaded')
 
 from pipe import *
+from re import split
 
 def word_count(filename):
   f = open(filename)
   s = f.read()
   f.close()
 
-  return s.lower().split()|groupby(lambda x: x)|select(lambda x: (x[0], x[1]|count))
+  return split('\W+', s.lower())|groupby(lambda x: x)|select(lambda x: (x[0], x[1]|count))
 
 def print_words(filename):
   for l in word_count(filename)|sort(key=lambda x: x[0]):
