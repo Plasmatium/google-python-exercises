@@ -8,6 +8,7 @@
 
 import sys
 import re
+from pipe import *
 
 """Baby Names exercise
 
@@ -33,6 +34,16 @@ Suggested milestones for incremental development:
  -Build the [year, 'name rank', ... ] list and print it
  -Fix main() to use the extract_names list
 """
+fn = r'C:\Users\Jonny.Wong\Documents\GitHub\google-python-exercises\babynames\baby1990.html'
+
+def yieldline(fn):
+  f = open(fn)
+  while True:
+    line = f.readline()
+    if line == '':
+      break
+    yield line
+  f.close()
 
 def extract_names(filename):
   """
@@ -41,7 +52,9 @@ def extract_names(filename):
   ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
   """
   # +++your code here+++
-  return
+  lines = yieldline(filename)|where(lambda x: '<tr align="right">' in x)|select(lambda x: x[:-1])|as_list
+  
+  return lines
 
 
 def main():
@@ -51,7 +64,7 @@ def main():
   args = sys.argv[1:]
 
   if not args:
-    print 'usage: [--summaryfile] file [file ...]'
+    print ('usage: [--summaryfile] file [file ...]')
     sys.exit(1)
 
   # Notice the summary flag and remove it from args if it is present.
