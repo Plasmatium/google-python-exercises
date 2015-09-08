@@ -34,7 +34,6 @@ Suggested milestones for incremental development:
  -Build the [year, 'name rank', ... ] list and print it
  -Fix main() to use the extract_names list
 """
-fn = r'C:\Users\Jonny.Wong\Documents\GitHub\google-python-exercises\babynames\baby1990.html'
 
 def yieldline(fn):
   f = open(fn)
@@ -46,21 +45,38 @@ def yieldline(fn):
   f.close()
 
 def extract_names(filename):
+    
   """
   Given a file name for baby.html, returns a list starting with the year string
   followed by the name-rank strings in alphabetical order.
   ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
   """
   # +++your code here+++
-  lines = yieldline(filename)|where(lambda x: '<tr align="right">' in x)|select(lambda x: x[:-1])|as_list
-  
+  lines = yieldline(filename)\
+  |where(lambda x: '<tr align="right">' in x)\
+  |select(lambda x: re.findall(r'<td>(\d+)</td><td>(\w+)</td><td>(\w+)</td>',x[:-1])[0]|as_list)
+    
+    
+    
   return lines
 
+def excute():
+    data = []
+    for filenum in range(1990, 2010, 2):
+        filename = 'baby' + str(filenum) + '.html'
+        data += [[str(filenum)] + (extract_names(filename)\
+        |select(lambda x: [ x[1] + ' ' + x[0], x[2] + ' ' + x[0] ] )|aggregate(lambda x, y: x+y)\
+        |sort)]
+    
+    datafile = open('datafile', 'w')
+    datafile.write(str(data))
+    datafile.close()
 
 def main():
   # This command-line parsing code is provided.
   # Make a list of command line arguments, omitting the [0] element
   # which is the script itself.
+  print('in babynames.py main()')
   args = sys.argv[1:]
 
   if not args:
@@ -78,4 +94,4 @@ def main():
   # or write it to a summary file
   
 if __name__ == '__main__':
-  main()
+  excute()
